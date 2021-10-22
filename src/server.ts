@@ -1,7 +1,7 @@
 import app from "./app";
 import errorHandler from "errorhandler";
 
-if (process .env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development") {
     app.use(errorHandler());
 };
 
