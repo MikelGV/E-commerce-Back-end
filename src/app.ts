@@ -5,11 +5,12 @@ import path from "path";
 import passport from "passport";
 
 import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
+import { MONGODB_PASSWORD } from "./noEnv";
 
 
 const app = express();
 
-mongoose.connect(MONGODB_URI).then(() => {
+mongoose.connect(MONGODB_PASSWORD).then(() => {
     console.log("Connected to mongodb!")
 }).catch(err => {
     console.log(`MongoDB connection error. Please make sure MongoDB is running. ${err}`)
