@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "dotenv": "^10.0.0",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
@@ -32,7 +33,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "dev": "nodemon ./src/server.ts",
+    "dev": "NODE_ENV=development && nodemon ./src/server.ts",
     "start": "node ./dist/server.js"
   },
   "author": "",
