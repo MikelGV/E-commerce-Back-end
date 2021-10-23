@@ -17,7 +17,7 @@ export type UserDocument = mongoose.Document & {
 };
 
 type cart = {
-    productId: string,
+    productId: number,
     quantity: number
 }
 
@@ -86,7 +86,22 @@ userSchema.methods.addToCart = function(product) {
     });
     var newQuantity = 1;
     const updateCartItems = [...this.cart];
-}
+
+    if (cartProductIndex >= 0) {
+        newQuantity = this.cart[cartProductIndex].quantity + 1;
+        updateCartItems[cartProductIndex].quantity = newQuantity
+    } else {
+        updateCartItems.push({
+            productId: product._id,
+            quantity: newQuantity
+        })
+    }
+    const updatedCartItems: any = {
+        items: updatedCartItems
+    };
+    this.cart = updatedCartItems;
+    return this.save
+};
 
 
 
