@@ -44,12 +44,10 @@ const userSchema = new mongoose.Schema<UserDocument>({
     passwordResetToken: String,
     passwordResetExpires: String,
     tokens: Array,
-    cart: {
-        items: [{
-            productId: {type: Schema.Types.ObjectId, ref: "Product", required: true},
-            quantity: {type: Number, required: true}
-        }]
-    }
+    cart: [{
+        productId: {type: Schema.Types.ObjectId, ref: "Product", required: true},
+        quantity: {type: Number, required: true}
+    }]
 });
 
 /** 
@@ -99,11 +97,24 @@ userSchema.methods.addToCart = function(product) {
         })
     }
     const updatedCart: any = {
-        cart: updateCartItems
+        items: updateCartItems
     };
     this.cart = updatedCart;
-    return this.save
+    return this.save();
 };
+
+
+userSchema.methods.removeFromCart = function () {
+    const updateCartItems = this.cart.filter(cart => {
+        return cart.productId.toString() !== productId.toString(); // I don't know why this doesn't work
+    });
+    this.cart = updateCartItems;
+    return this.save();
+};
+
+userSchema.methods.clearCart = function () {
+    this.cart = {cart: []} // I don't know why this doesn't work
+}
 
 
 
