@@ -7,6 +7,8 @@ import passport from "passport";
 import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
 import { MONGODB_PASSWORD } from "./noEnv";
 
+import * as passportConfig from "./config/passport";
+
 
 const app = express();
 
@@ -19,6 +21,9 @@ mongoose.connect(MONGODB_PASSWORD).then(() => {
 app.set("port", process.env.PORT || 4000);
 app.use(passport.initialize());
 //app.use(passport.session());
+
+app.use(passport.initialize());
+app.use(passport.session());
 app.use((req, res, next) => {
     res.locals.user = req.user;
     next();
