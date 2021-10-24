@@ -16,12 +16,12 @@ export type UserDocument = mongoose.Document & {
     comparePassword: comparePasswordFunction;
 };
 
-type cart = {
-    productId: number,
-    quantity: number
-}
-
 type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => void) => void;
+type cart = {
+    productId: object,
+    quantity: number
+
+}
 
 export interface AuthToken {
     accessToken: string;
@@ -44,11 +44,13 @@ const userSchema = new mongoose.Schema<UserDocument>({
     passwordResetToken: String,
     passwordResetExpires: String,
     tokens: Array,
-    cart: [{
-        productId: {type: Schema.Types.ObjectId, ref: "Product", required: true},
-        quantity: {type: Number, required: true}
-    }]
-}, {timestamps: true});
+    cart: {
+        items: [{
+            productId: {type: Schema.Types.ObjectId, ref: "Product", required: true},
+            quantity: {type: Number, required: true}
+        }]
+    }
+});
 
 /** 
  * Password hash middleware
@@ -96,10 +98,10 @@ userSchema.methods.addToCart = function(product) {
             quantity: newQuantity
         })
     }
-    const updatedCartItems: any = {
-        items: updatedCartItems
+    const updatedCart: any = {
+        cart: updateCartItems
     };
-    this.cart = updatedCartItems;
+    this.cart = updatedCart;
     return this.save
 };
 
