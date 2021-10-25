@@ -9,9 +9,14 @@ import { Callback, NativeError } from "mongoose";
 
 /**
  * Login page.
- * GET /login
+ * POST /login
  */
 
+
+/**
+ *  Signup
+ * POST /signup
+ */
 export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     await check("email", "Email is not valid").isEmail().run(req);
     await check("username", "Username is not valid").run(req);
@@ -29,7 +34,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
     const user = new User({
         email: req.body.email,
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password // i don't know why this fails
     });
 
     User.findOne({ email: req.body.email }, (err: NativeError, existingUser: UserDocument) => {
