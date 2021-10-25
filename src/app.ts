@@ -9,6 +9,7 @@ import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
 import { MONGODB_PASSWORD, SESSION_SECRETS } from "./noEnv";
 
 import * as passportConfig from "./config/passport";
+import * as authController from "./controllers/auth";
 
 
 const app = express();
@@ -45,6 +46,9 @@ app.use((req, res, next) => {
         }
         next();
 });
+
+
+app.post("/signup", authController.signup)
 
 
 export default app;
