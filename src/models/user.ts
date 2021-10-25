@@ -104,17 +104,17 @@ userSchema.methods.addToCart = function(product) {
 };
 
 
-userSchema.methods.removeFromCart = function () {
-    const updateCartItems = this.cart.filter(cart => {
-        return cart.productId.toString() !== productId.toString(); // I don't know why this doesn't work
-    });
-    this.cart = updateCartItems;
-    return this.save();
-};
+// userSchema.methods.removeFromCart = function () {
+//     const updateCartItems = this.cart.filter(cart => {
+//         return cart.productId.toString() !== productId.toString(); // I don't know why this doesn't work
+//     });
+//     this.cart = updateCartItems;
+//     return this.save();
+// };
 
-userSchema.methods.clearCart = function () {
-    this.cart = {cart: []} // I don't know why this doesn't work
-}
+// userSchema.methods.clearCart = function () {
+//     this.cart = cart[] // I don't know why this doesn't work
+// }
 
 
 
