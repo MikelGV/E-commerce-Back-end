@@ -28,14 +28,15 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
 
     if (!errors.isEmpty()) {
         //req.flash("errors", errors.array());
-        return res.redirect("/signup");
+        // return res.redirect("/signup");
     }
 
     const user = new User({
-        email: req.body.email,
+        email: req.body.email,// i don't know why this fails
         username: req.body.username,
         password: req.body.password 
     });
+    console.log(user)
 
     User.findOne({ email: req.body.email }, (err: NativeError, existingUser: UserDocument) => {
         if (err) {return next(err)}
