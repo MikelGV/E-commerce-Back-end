@@ -21,7 +21,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
     await check("email", "Email is not valid").isEmail().run(req);
     await check("username", "Username is not valid").run(req);
     await check("password", "Password must be at least 4 characters long").isLength({ min:4 }).run(req);
-    await check("confirmPassword", "Passwords do not match").equals(req.body.password).run(req);
+    // await check("confirmPassword", "Passwords do not match").equals(req.body.password).run(req); // i don't know why this fails
     await body("email").normalizeEmail({ gmail_remove_dots: false }).run(req);
 
     const errors = validationResult(req);
@@ -34,13 +34,13 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
     const user = new User({
         email: req.body.email,
         username: req.body.username,
-        password: req.body.password // i don't know why this fails
+        password: req.body.password 
     });
 
     User.findOne({ email: req.body.email }, (err: NativeError, existingUser: UserDocument) => {
         if (err) {return next(err)}
         if (existingUser) {
-            return res.redirect("/signup");
+            return res.status(500).json({ message: "User already exists", userId: user._id })
         }
         user.save((err) => {
             if (err) { return next(err); }
