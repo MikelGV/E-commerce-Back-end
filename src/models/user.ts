@@ -1,13 +1,12 @@
 import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose, { Schema } from "mongoose";
-import { type } from "os";
 
 export type UserDocument = mongoose.Document & {
     email: string;
     username: string;
     password: string;
-    cart: cart[];
+    cart: any;
     passwordResetToken: string;
     passwordResetExpires: Date;
 
@@ -17,11 +16,6 @@ export type UserDocument = mongoose.Document & {
 };
 
 type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => void) => void;
-type cart = {
-    productId: object,
-    quantity: number
-
-}
 
 export interface AuthToken {
     accessToken: string;
@@ -45,8 +39,17 @@ const userSchema = new mongoose.Schema<UserDocument>({
     passwordResetExpires: String,
     tokens: Array,
     cart: [{
-        productId: {type: Schema.Types.ObjectId, ref: "Product", required: true},
-        quantity: {type: Number, required: true}
+        items: {
+            productId: {
+                type: Schema.Types.ObjectId,
+                ref: 'Product',
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            }
+        }
     }]
 });
 
@@ -80,42 +83,41 @@ userSchema.methods.comparePassword = comparePassword;
  *  Add to cart methods
  */
 
-userSchema.methods.addToCart = function(product) {
-    const cartProductIndex = this.cart.findIndex(cp => {
-        return cp.productId.toString() === product._id.toString();
+ userSchema.methods.addToCart = function(product) {
+    const cartProductIndex = this.cart.items.findIndex(cp => {
+      return cp.productId.toString() === product._id.toString();
     });
     var newQuantity = 1;
-    const updateCartItems = [...this.cart];
-
-    if (cartProductIndex >= 0) {
-        newQuantity = this.cart[cartProductIndex].quantity + 1;
-        updateCartItems[cartProductIndex].quantity = newQuantity
+    const updatedCartItems = [...this.cart.items];
+  
+    if (cartProductIndex >= 0 ) {
+      newQuantity = this.cart.items[cartProductIndex].quantity + 1;
+      updatedCartItems[cartProductIndex].quantity = newQuantity
     } else {
-        updateCartItems.push({
-            productId: product._id,
-            quantity: newQuantity
-        })
+      updatedCartItems.push({
+        productId: product._id, 
+        quantity: newQuantity 
+      })
     }
-    const updatedCart: any = {
-        items: updateCartItems
+    const updatedCart = {
+      items: updatedCartItems
     };
     this.cart = updatedCart;
     return this.save();
-};
-
-
-// userSchema.methods.removeFromCart = function () {
-//     const updateCartItems = this.cart.filter(cart => {
-//         return cart.productId.toString() !== productId.toString(); // I don't know why this doesn't work
-//     });
-//     this.cart = updateCartItems;
-//     return this.save();
-// };
-
-// userSchema.methods.clearCart = function () {
-//     this.cart = cart[] // I don't know why this doesn't work
-// }
-
+  }
+  
+  userSchema.methods.removeFromCart = function (productId) {
+    const updatedCartItems = this.cart.items.filter(item => {
+      return item.productId.toString() !== productId.toString();
+    });
+    this.cart.items = updatedCartItems;
+    return this.save();
+  };
+  
+  userSchema.methods.clearCart = function () {
+    this.cart = {items: []};
+    return this.save();
+  }
 
 
 export const User = mongoose.model<UserDocument>("User", userSchema);
