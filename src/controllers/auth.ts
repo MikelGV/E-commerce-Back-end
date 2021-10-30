@@ -18,13 +18,13 @@ import { Callback, NativeError } from "mongoose";
  * POST /signup
  */
 export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        const error = new Error('Validation failed.');
-        error.statusCode = 422;
-        error.data = errors.array();
-        throw error;
-    }
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //     const error = new Error('Validation failed.');
+    //     error.statusCode = 422;
+    //     error.data = errors.array();
+    //     throw error;
+    // }
     const email = req.body.email;
     const name = req.body.name;
     const password = req.body.password;
@@ -37,10 +37,10 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
         const result = await user.save();
         res.status(201).json({ message: 'User created!', userId: result._id });
     } catch (err) {
-        if (!err.statusCode) {
-          err.statusCode = 500;
-        }
-        next(err);
+        // if (!err.statusCode) {
+        //   err.statusCode = 500;
+        // }
+        // next(err);
         
     }
 };
