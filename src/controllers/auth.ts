@@ -11,6 +11,7 @@ import { Callback, NativeError } from "mongoose";
  * Login page.
  * POST /login
  */
+export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {}
 
 
 /**
