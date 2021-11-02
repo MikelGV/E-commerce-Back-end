@@ -5,14 +5,27 @@ import { Request, Response, NextFunction } from "express";
 import { body, check, validationResult } from "express-validator";
 import "../config/passport";
 import { Callback, NativeError } from "mongoose";
+import { IVerifyOptions } from "passport-local";
 
 
 /**
  * Login page.
  * POST /login
  */
-export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {}
+export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    await check("email", "Email is not valid").isEmail().run(req);
+    await check("password", "Password cannot be blank").isLength({min: 1}).run(req);
+    await body("email").normalizeEmail({gmail_remove_dots: false}).run(req);
 
+    passport.authenticate("local", (err: Error, user:UserDocument, info:IVerifyOptions) => {
+        if (err) {
+            return next(err)
+        }
+        if (!user) {
+            
+        }
+    })
+}
 
 /**
  *  Signup
