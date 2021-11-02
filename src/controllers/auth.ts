@@ -30,13 +30,14 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
     const password = req.body.password;
     try {
         const user = new User({
-        email: email,
-        password: password,
-        name: name
+            email: email,
+            password: password,
+            name: name
         });
         const result = await user.save();
         res.status(201).json({ message: 'User created!', userId: result._id });
     } catch (err) {
+        console.log("something is not working")
         // if (!err.statusCode) {
         //   err.statusCode = 500;
         // }
