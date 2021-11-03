@@ -3,8 +3,6 @@ import { User, UserDocument, AuthToken } from "../models/user";
 import { Request, Response, NextFunction } from "express";
 import { body, check, validationResult } from "express-validator";
 import { Callback, NativeError } from "mongoose";
-// my imports
-
 
 /**
  * Login page.
@@ -20,15 +18,15 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
  *  Signup
  * POST /signup
  */
-export const signup = async (req: Request, res: Response, next: NextFunction) => {
+export const signup = async (error: IError, req: Request, res: Response, next: NextFunction): Promise<void> => {
     const errors = validationResult(req);
 
-    // if (!errors.isEmpty()) {
-    //     const error = new Error('Validation failed.');
-    //     error.statusCode = 422;
-    //     error.data = errors.array();
-    //     throw error;
-    //   }
+    if (!errors.isEmpty()) {
+        const error = new IError('Validation failed.'); // <---- I don't know why this doesn't work
+        error.statusCode = 422;
+        error.data = errors.array();
+        throw error;
+      }
 
     const email = req.body.email;
     const username = req.body.username;
