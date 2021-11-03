@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from "express";
 import { body, check, validationResult } from "express-validator";
 import { Callback, NativeError } from "mongoose";
 // my imports
-import "../config/passport";
 
 
 /**
