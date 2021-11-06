@@ -18,7 +18,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
  *  Signup
  * POST /signup
  */
-export const signup = async (error: IError, req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -39,12 +39,12 @@ export const signup = async (error: IError, req: Request, res: Response, next: N
         });
         const result = await user.save();
         res.status(201).json({ message: 'User created!', userId: result._id });
-    } catch (err) {
+    } catch (err: any) {
         console.log("something is not working")
-        // if (!err.statusCode) {
-        //   err.statusCode = 500;
-        // }
-        // next(err);
+        if (!err.statusCode) {
+          err.statusCode = 500;
+        }
+        next(err);
         
     }
 };
