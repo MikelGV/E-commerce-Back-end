@@ -1,4 +1,4 @@
-interface IError {
+interface Error {
     message: string;
     name: string;
     stack?: string;
@@ -6,4 +6,3 @@ interface IError {
     data: any;
 
 }
-
