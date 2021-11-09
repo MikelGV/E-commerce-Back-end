@@ -28,7 +28,8 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(status).json({ message: message, data: data });
 });
 
-app.post("/signup", authController.signup)
-
+// Routes
+app.post("/login", authController.login);
+app.post("/signup", authController.signup);
 
 export default app;
