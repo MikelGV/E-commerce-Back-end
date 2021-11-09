@@ -1,4 +1,5 @@
-// External imports
+// imports
+import bcrypt from "bcrypt-nodejs";
 import { User, UserDocument, AuthToken } from "../models/user";
 import { Request, Response, NextFunction } from "express";
 import { body, check, validationResult } from "express-validator";
@@ -15,11 +16,29 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
     try {
         const user = await User.findOne({email: email});
         if (!user) {
-            const error = Error("A user with this email could not be found.")
-            error.statusCode= 401
-            throw error
+            const err = Error("A user with this email could not be found.")
+            res.status(401)
+            next(err)
         };
         loadedUser = user;
+        const isEqual: any = user?.comparePassword(password, (err, isMatch) => { // This fails and gives me a !isEqueal Error
+            if (err) {
+                const err = Error("Wrong email or password.");
+                res.status(401);
+                next(err)
+            }
+            if (isMatch) {
+                res.status(201);
+                next(isMatch);
+            }
+        })
+        if (!isEqual) {
+            const error = Error("Wrong password!");
+            res.status(422)
+            next(error)
+        }
+        res.status(200).json({userId: loadedUser._id.toString()});
+        return;
     } catch (err: any) {
         if (!err.statusCode) {
             err.statusCode = 500;
@@ -38,9 +57,8 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
 
     if (!errors.isEmpty()) {
         const error = new Error('Validation failed.'); // <---- I don't know why this doesn't work
-        error.statusCode = 422;
-        error.data = errors.array();
-        throw error;
+        res.status(422)
+        next(error)
       }
 
     const email = req.body.email;
