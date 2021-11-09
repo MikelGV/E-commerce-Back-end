@@ -20,7 +20,7 @@ mongoose.connect(monogoUrl).then(() => {
 
 app.set("port", process.env.PORT || 4000);
 
-app.use((error: IError, req: Request, res: Response, next: NextFunction) => {
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     console.log(error);
     const status = error.statusCode || 500;
     const message = error.message;
