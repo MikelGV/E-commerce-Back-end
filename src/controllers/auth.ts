@@ -9,10 +9,25 @@ import { Callback, NativeError } from "mongoose";
  * POST /login
  */
 export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-
-    const errors = validationResult(req);
-
-}
+    const email = req.body.email;
+    const password = req.body.password;
+    let loadedUser;
+    try {
+        const user = await User.findOne({email: email});
+        if (!user) {
+            const error = Error("A user with this email could not be found.")
+            error.statusCode= 401
+            throw error
+        };
+        loadedUser = user;
+    } catch (err: any) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        };
+        next(err)
+        return err
+    };
+};
 
 /**
  *  Signup
