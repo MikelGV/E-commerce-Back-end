@@ -20,16 +20,12 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             res.status(401)
             next(err)
         };
-        loadedUser = user;
-        const isEqual: any = user?.comparePassword(password, (err, isMatch) => { // This fails and gives me a !isEqueal Error
-            if (err) {
-                const err = Error("Wrong email or password.");
+        const loadedUser = user;
+        const isEqual: any = user?.comparePassword(password, (isMatch) => { // This fails and leads me to a !isEqueal Error
+            if (!isMatch) {
+                const err = Error("The password doesn't match.");
                 res.status(401);
                 next(err)
-            }
-            if (isMatch) {
-                res.status(201);
-                next(isMatch);
             }
         })
         if (!isEqual) {
@@ -37,7 +33,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             res.status(422)
             next(error)
         }
-        res.status(200).json({userId: loadedUser._id.toString()});
+        res.status(200).json({userId: loadedUser?._id.toString()});
         return;
     } catch (err: any) {
         if (!err.statusCode) {
