@@ -20,21 +20,20 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             res.status(401)
             next(err)
         };
-        const loadedUser = user;
-        const isEqual: any = user?.comparePassword(password, (isMatch) => { // This fails and leads me to a !isEqueal Error
-            if (!isMatch) {
+        loadedUser = user;
+        user?.comparePassword(password, (err, isMatch) => {
+            if (err) {
                 const err = Error("The password doesn't match.");
                 res.status(401);
                 next(err)
             }
+
+            if (isMatch) {
+                res.status(200).json({userID: loadedUser._id.toString()})
+                console.log("you are logged")
+                return
+            }
         })
-        if (!isEqual) {
-            const error = Error("Wrong password!");
-            res.status(422)
-            next(error)
-        }
-        res.status(200).json({userId: loadedUser?._id.toString()});
-        return;
     } catch (err: any) {
         if (!err.statusCode) {
             err.statusCode = 500;
