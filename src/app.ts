@@ -5,6 +5,7 @@ import path from "path";
 import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
 import { MONGODB_PASSWORD, SESSION_SECRETS } from "./noEnv";
 import * as authController from "./controllers/auth";
+import * as feedController from "./controllers/feed";
 
 const app = express();
 const monogoUrl = MONGODB_PASSWORD
@@ -31,5 +32,5 @@ app.set("port", process.env.PORT || 4000);
 // Routes
 app.post("/login", authController.login);
 app.post("/signup", authController.signup);
-
+app.post("/addToCart", feedController.addToCart);
 export default app;
