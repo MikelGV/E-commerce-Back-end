@@ -25,4 +25,5 @@ app.set("port", process.env.PORT || 4000);
 app.post("/login", authController.login);
 app.post("/signup", authController.signup);
 app.post("/addToCart", feedController.addToCart);
+app.post("/addProduct", feedController.addProduct);
 export default app;
