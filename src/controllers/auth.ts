@@ -1,9 +1,7 @@
 // imports
-import bcrypt from "bcrypt-nodejs";
 import { User, UserDocument, AuthToken } from "../models/user";
 import { Request, Response, NextFunction } from "express";
-import { body, check, validationResult } from "express-validator";
-import { Callback, NativeError } from "mongoose";
+import { validationResult } from "express-validator";
 
 /**
  * Login page.
