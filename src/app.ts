@@ -12,14 +12,13 @@ const monogoUrl = MONGODB_PASSWORD
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.set("port", process.env.PORT || 4000);
 
 mongoose.connect(monogoUrl).then(() => {
     console.log("Connected to mongodb!")
 }).catch(err => {
     console.log(`MongoDB connection error. Please make sure MongoDB is running. ${err}`)
 });
-
-app.set("port", process.env.PORT || 4000);
 
 // Routes
 app.post("/login", authController.login);
