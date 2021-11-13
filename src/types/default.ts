@@ -1,8 +1,4 @@
-interface Error {
-    message: string;
-    name: string;
-    stack?: string;
-    statusCode: number;
-    data: any;
-
+import { Request } from "express"
+export interface IGetUserAuthInfoRequest extends Request {
+  userId: number
 }
