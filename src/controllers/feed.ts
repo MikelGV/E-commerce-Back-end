@@ -22,7 +22,7 @@ export const addProduct = async (req:IGetUserAuthInfoRequest, res: Response, nex
     const title = req.body.title;
     const price = req.body.price;
     const description = req.body.description;
-    //const imageUrl = req.file.path; -
+    //const imageUrl = req.file.path; example commit
     const product = new Product({
         title: title,
         price: price,
