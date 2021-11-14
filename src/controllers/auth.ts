@@ -74,3 +74,13 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
         
     }
 };
+/**
+ * Logout
+ */
+
+export const logout = async (req: Request, res: Response, next: NextFunction) => {
+    req.session.destroy((err) => {
+        console.log(err)
+        res.send(201);
+    });
+}
