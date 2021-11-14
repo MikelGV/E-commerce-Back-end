@@ -3,7 +3,7 @@ import { Product } from "../models/product";
 import path from "path";
 import { NextFunction, Response, Request } from "express";
 import { validationResult } from "express-validator";
-import { IGetUserAuthInfoRequest } from "../types/default";
+//import { IGetUserAuthInfoRequest } from "../types/default";
 import { User } from "../models/user";
 
 const ITEMS_PER_PAGE = 2;
@@ -12,7 +12,7 @@ const ITEMS_PER_PAGE = 2;
 /**
  * Create Product
  */
-export const addProduct = async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction): Promise<void> => {
+export const addProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const error = new Error("Validation failed, entered data is incorrect.");
