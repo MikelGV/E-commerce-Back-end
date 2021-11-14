@@ -31,7 +31,6 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
     });
     try {
         await product.save();
-        const user = await User.findById(req.userId);
     } catch (err: any) {
         if (!err.statusCode) {
             err.statusCode = 500;
