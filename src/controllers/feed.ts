@@ -23,14 +23,15 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
     const price = req.body.price;
     const description = req.body.description;
     //const imageUrl = req.file.path; example commit
-    const product = new Product({
-        title: title,
-        price: price,
-        description: description,
-        userId: req.userId
-    });
     try {
-        await product.save();
+        const product = new Product({
+            title: title,
+            price: price,
+            description: description,
+            userId: req.userId
+        });
+        const result = await product.save();
+        res.status(201).json({message: "Product created", productId: result._id})
     } catch (err: any) {
         if (!err.statusCode) {
             err.statusCode = 500;

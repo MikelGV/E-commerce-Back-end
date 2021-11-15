@@ -1,6 +1,7 @@
 import express, {Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import path from "path";
+import session from "express-session";
 
 import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
 import { MONGODB_PASSWORD, SESSION_SECRETS } from "./noEnv";
@@ -12,6 +13,10 @@ const monogoUrl = MONGODB_PASSWORD
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(session({
+    secret: SESSION_SECRETS,
+    resave: false
+}))
 app.set("port", process.env.PORT || 4000);
 
 mongoose.connect(monogoUrl).then(() => {
