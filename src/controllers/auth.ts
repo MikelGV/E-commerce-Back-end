@@ -2,6 +2,7 @@
 import { User, UserDocument, AuthToken } from "../models/user";
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
+import jwt from "jsonwebtoken";
 
 /**
  * Login page.
@@ -19,6 +20,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             next(err)
         };
         loadedUser = user;
+        const token = jwt
         user?.comparePassword(password, (err, isMatch) => {
             if (err) {
                 const err = Error("The password doesn't match.");
@@ -28,7 +30,6 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
 
             if (isMatch) {
                 res.status(200).json({userID: loadedUser._id.toString()})
-                console.log("you are logged")
                 return
             }
         })
@@ -81,6 +82,6 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
 export const logout = async (req: Request, res: Response, next: NextFunction) => {
     req.session.destroy((err) => {
         console.log(err)
-        res.send(201);
+        res.send(200);
     });
 }

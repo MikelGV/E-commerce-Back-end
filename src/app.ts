@@ -27,6 +27,7 @@ mongoose.connect(monogoUrl).then(() => {
 
 // Routes
 app.post("/login", authController.login);
+app.post("/logout", authController.logout);
 app.post("/signup", authController.signup);
 app.post("/addToCart", feedController.addToCart);
 app.post("/addProduct", feedController.addProduct);
