@@ -22,12 +22,13 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
     const title = req.body.title;
     const price = req.body.price;
     const description = req.body.description;
-    //const imageUrl = req.file.path; example commit
+    const imageUrl = req.file.path;
     try {
         const product = new Product({
             title: title,
             price: price,
             description: description,
+            imageUrl: imageUrl,
             userId: req.userId
         });
         const result = await product.save();
