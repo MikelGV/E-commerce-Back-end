@@ -44,3 +44,10 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
  * Add to cart
  */
 export const addToCart = async (req: Request, res: Response, next: NextFunction): Promise<void> => {}
+
+
+/**
+ * Get Products
+ */
+
+export const getProducts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {}
