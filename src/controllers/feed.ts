@@ -29,7 +29,7 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
             price: price,
             description: description,
             imageUrl: imageUrl,
-            userId: req.userId
+            userId: req.userId // --> I don't know why this doesn't work
         });
         const result = await product.save();
         res.status(201).json({message: "Product created", productId: result._id})
