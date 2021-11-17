@@ -24,7 +24,7 @@ const productSchema = new mongoose.Schema<ProductDocument>({
     },
     imageUrl: {
         type: String,
-        required: true
+        required: false
     },
     userId: {
         type: Schema.Types.ObjectId,
