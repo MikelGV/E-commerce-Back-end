@@ -20,7 +20,10 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             next(err)
         };
         loadedUser = user;
-        const token = jwt
+        const token = jwt.sign({
+            email: user?.email,
+            id: user?._id
+        }, 'supersecret')
         user?.comparePassword(password, (err, isMatch) => {
             if (err) {
                 const err = Error("The password doesn't match.");
@@ -29,7 +32,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             }
 
             if (isMatch) {
-                res.status(200).json({userID: loadedUser._id.toString()})
+                res.status(200).json({tokens: token, userId: loadedUser._id.toString()})
                 return
             }
         })
