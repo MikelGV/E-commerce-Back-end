@@ -31,18 +31,22 @@ const fileStorage = multer.diskStorage({
     }
 })
 
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
-app.use(csrf());
-app.use(multer({storage: fileStorage, fileFilter: (req, file, cb) => {
+const fileFilter = (req, file, cb) => {
     if(
-        file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg'
+        file.mimetype === 'image/png' ||
+        file.mimetype === 'image/jpg' ||
+        file.mimetype === 'image/jpeg'
     ) {
-        cb(null, true);
+        cb(null, true)
     } else {
         cb(null, false)
     }
-}}).single('image'));
+};
+
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.use(csrf());
+app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(session({
     secret: SESSION_SECRETS,
