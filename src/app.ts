@@ -44,6 +44,11 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
+// parser
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
+
 // Routes
 app.post("/login", authController.login);
 app.post("/logout", authController.logout);
@@ -51,9 +56,7 @@ app.post("/signup", authController.signup);
 app.post("/addToCart", feedController.addToCart);
 app.post("/addProduct", feedController.addProduct);
 
-
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
+// multer, sessions and headers
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(session({

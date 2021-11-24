@@ -53,10 +53,10 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        const error = new Error('Validation failed.'); // <---- I don't know why this doesn't work
+        const error = new Error('Validation failed.');
         res.status(422)
         next(error)
-      }
+    }
 
     const email = req.body.email;
     const username = req.body.username;

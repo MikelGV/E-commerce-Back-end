@@ -22,15 +22,13 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
     const title = req.body.title;
     const price = req.body.price;
     const description = req.body.description;
-    const userId = req.userId
     const imageUrl = req.file?.path;
     try {
         const product = new Product({
             title: title,
             price: price,
             description: description,
-            imageUrl: imageUrl,
-            userId: userId // --> I don't know why this doesn't work
+            imageUrl: imageUrl
         });
         const result = await product.save();
         res.status(201).json({message: "Product created", productId: result._id})
@@ -46,7 +44,7 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
  * Add to cart
  */
 export const addToCart = async (req: Request, res: Response, next: NextFunction) => {}
-
+    
 
 /**
  * Get Products
