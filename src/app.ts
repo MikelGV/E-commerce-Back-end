@@ -1,12 +1,9 @@
 import express, {Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import path from "path";
-import session from "express-session";
 import fs from "fs";
 import MongoStore from "connect-mongo"
 import csrf from "csurf"
-import flash from "connect-flash";
-import compression from "compression"
 import dotenv from "dotenv";
 import multer from "multer";
 
@@ -52,7 +49,6 @@ app.use(express.json());
 
 // Routes
 app.post("/login", authController.login);
-app.post("/logout", authController.logout);
 app.post("/signup", authController.signup);
 app.post("/addToCart",isAuth, feedController.addToCart);
 app.post("/addProduct",isAuth, feedController.addProduct);
@@ -61,12 +57,7 @@ app.get("/products", isAuth, feedController.getProducts);
 // multer, sessions and headers
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use(session({
-    secret: SESSION_SECRETS,
-    resave: false,
-    saveUninitialized: false,
-    store: store
-}));
+
 app.use((req: Request, res: Response, next: NextFunction) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
