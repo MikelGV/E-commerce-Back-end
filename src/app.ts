@@ -61,12 +61,7 @@ app.get("/products", isAuth, feedController.getProducts);
 // multer, sessions and headers
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use(session({
-    secret: SESSION_SECRETS,
-    resave: false,
-    saveUninitialized: false,
-    store: store
-}));
+
 app.use((req: Request, res: Response, next: NextFunction) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
