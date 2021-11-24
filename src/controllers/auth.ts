@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
  * Login page.
  * POST /login
  */
-export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
     const email = req.body.email;
     const password = req.body.password;
     let loadedUser;
@@ -49,7 +49,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
  *  Signup
  * POST /signup
  */
-export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const signup = async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
