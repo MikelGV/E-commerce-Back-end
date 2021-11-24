@@ -1,12 +1,9 @@
 import express, {Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import path from "path";
-import session from "express-session";
 import fs from "fs";
 import MongoStore from "connect-mongo"
 import csrf from "csurf"
-import flash from "connect-flash";
-import compression from "compression"
 import dotenv from "dotenv";
 import multer from "multer";
 
