@@ -28,7 +28,8 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
             title: title,
             price: price,
             description: description,
-            imageUrl: imageUrl
+            imageUrl: imageUrl,
+            userId: req.userId
         });
         const result = await product.save();
         res.status(201).json({message: "Product created", productId: result._id})
