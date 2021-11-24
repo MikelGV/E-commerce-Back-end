@@ -22,7 +22,7 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
     const title = req.body.title;
     const price = req.body.price;
     const description = req.body.description;
-    const imageUrl = req.file.path;
+    const imageUrl = req.file?.path;
     try {
         const product = new Product({
             title: title,
