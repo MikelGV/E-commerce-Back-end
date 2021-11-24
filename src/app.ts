@@ -13,6 +13,7 @@ import multer from "multer";
 import { MONGODB_PASSWORD, SESSION_SECRETS } from "./noEnv";
 import * as authController from "./controllers/auth";
 import * as feedController from "./controllers/feed";
+import isAuth from "./middleware/is-auth";
 
 dotenv.config({path: '.env'});
 
@@ -53,8 +54,9 @@ app.use(express.json());
 app.post("/login", authController.login);
 app.post("/logout", authController.logout);
 app.post("/signup", authController.signup);
-app.post("/addToCart", feedController.addToCart);
-app.post("/addProduct", feedController.addProduct);
+app.post("/addToCart",isAuth, feedController.addToCart);
+app.post("/addProduct",isAuth, feedController.addProduct);
+app.get("/products", isAuth, feedController.getProducts);
 
 // multer, sessions and headers
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
