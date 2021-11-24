@@ -50,4 +50,19 @@ export const addToCart = async (req: Request, res: Response, next: NextFunction)
  * Get Products
  */
 
-export const getProducts = async (req: Request, res: Response, next: NextFunction) => {}
+export const getProducts = async (req: Request, res: Response, next: NextFunction) => {
+    const productId = req.params.productId;
+    const product = await Product.findById(productId);
+    try {
+        if (!product) {
+            const error = new Error("Could not find a product");
+            res.send(404);
+        }
+        res.status(200).json({message: 'Product fetched.', product: product});
+    } catch (err: any) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+    }
+};
