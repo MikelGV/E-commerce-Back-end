@@ -2,26 +2,63 @@ import express, {Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import path from "path";
 import session from "express-session";
+import fs from "fs";
+import MongoStore from "connect-mongo"
+import csrf from "csurf"
+import flash from "connect-flash";
+import compression from "compression"
+import dotenv from "dotenv";
+import multer from "multer";
 
-import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
 import { MONGODB_PASSWORD, SESSION_SECRETS } from "./noEnv";
 import * as authController from "./controllers/auth";
 import * as feedController from "./controllers/feed";
 
+dotenv.config({path: '.env'});
+
 const app = express();
-const monogoUrl = MONGODB_PASSWORD
+const store = new MongoStore({
+    mongoUrl: MONGODB_PASSWORD,
+    collectionName: 'Session'
+})
+
+const fileStorage = multer.diskStorage({
+    destination: (req: Request, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (req: Request, file, cb) => {
+        cb(null, new Date().toDateString() + '-' + file.originalname);
+    }
+})
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(csrf());
+app.use(multer({storage: fileStorage, fileFilter: (req: Request, file, cb) => {
+    if(
+        file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg'
+    ) {
+        cb(null, true);
+    } else {
+        cb(null, false)
+    }
+}}).single('image'));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(session({
     secret: SESSION_SECRETS,
     resave: false,
-    saveUninitialized: true,
-    cookie: {secure: true}
-}))
+    saveUninitialized: false,
+    store: store
+}));
+app.use((req: Request, res: Response, next: NextFunction) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+});
+
 app.set("port", process.env.PORT || 4000);
 
-mongoose.connect(monogoUrl).then(() => {
+mongoose.connect(MONGODB_PASSWORD).then(() => {
     console.log("Connected to mongodb!")
 }).catch(err => {
     console.log(`MongoDB connection error. Please make sure MongoDB is running. ${err}`)
