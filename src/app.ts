@@ -17,6 +17,7 @@ import * as feedController from "./controllers/feed";
 dotenv.config({path: '.env'});
 
 const app = express();
+
 const store = new MongoStore({
     mongoUrl: MONGODB_PASSWORD,
     collectionName: 'Session'
@@ -43,9 +44,16 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
+// Routes
+app.post("/login", authController.login);
+app.post("/logout", authController.logout);
+app.post("/signup", authController.signup);
+app.post("/addToCart", feedController.addToCart);
+app.post("/addProduct", feedController.addProduct);
+
+
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-app.use(csrf());
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(session({
@@ -59,6 +67,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     res.setHeader('Access-Control-Allow-Headers', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 });
+app.use(csrf());
 
 app.set("port", process.env.PORT || 4000);
 
@@ -68,10 +77,4 @@ mongoose.connect(MONGODB_PASSWORD).then(() => {
     console.log(`MongoDB connection error. Please make sure MongoDB is running. ${err}`)
 });
 
-// Routes
-app.post("/login", authController.login);
-app.post("/logout", authController.logout);
-app.post("/signup", authController.signup);
-app.post("/addToCart", feedController.addToCart);
-app.post("/addProduct", feedController.addProduct);
 export default app;
