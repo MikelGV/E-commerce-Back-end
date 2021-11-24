@@ -23,10 +23,10 @@ const store = new MongoStore({
 })
 
 const fileStorage = multer.diskStorage({
-    destination: (req: Request, file, cb) => {
+    destination: (req, file, cb) => {
         cb(null, 'images/');
     },
-    filename: (req: Request, file, cb) => {
+    filename: (req, file, cb) => {
         cb(null, new Date().toDateString() + '-' + file.originalname);
     }
 })
@@ -34,7 +34,7 @@ const fileStorage = multer.diskStorage({
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(csrf());
-app.use(multer({storage: fileStorage, fileFilter: (req: Request, file, cb) => {
+app.use(multer({storage: fileStorage, fileFilter: (req, file, cb) => {
     if(
         file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg'
     ) {
