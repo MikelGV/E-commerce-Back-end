@@ -16,11 +16,6 @@ dotenv.config({path: '.env'});
 
 const app = express();
 
-const store = new MongoStore({
-    mongoUrl: MONGODB_PASSWORD,
-    collectionName: 'Session'
-})
-
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'images/');
