@@ -24,7 +24,7 @@ const store = new MongoStore({
 
 const fileStorage = multer.diskStorage({
     destination: (req: Request, file, cb) => {
-        cb(null, 'images');
+        cb(null, 'images/');
     },
     filename: (req: Request, file, cb) => {
         cb(null, new Date().toDateString() + '-' + file.originalname);
