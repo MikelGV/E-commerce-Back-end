@@ -49,7 +49,6 @@ app.use(express.json());
 
 // Routes
 app.post("/login", authController.login);
-app.post("/logout", authController.logout);
 app.post("/signup", authController.signup);
 app.post("/addToCart",isAuth, feedController.addToCart);
 app.post("/addProduct",isAuth, feedController.addProduct);
