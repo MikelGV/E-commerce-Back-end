@@ -7,7 +7,7 @@ import csrf from "csurf"
 import dotenv from "dotenv";
 import multer from "multer";
 
-import { MONGODB_PASSWORD, SESSION_SECRETS } from "./noEnv";
+import { MONGODB_PASSWORD } from "./noEnv";
 import * as authController from "./controllers/auth";
 import * as feedController from "./controllers/feed";
 import isAuth from "./middleware/is-auth";
