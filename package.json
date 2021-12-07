@@ -34,7 +34,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "dev": "NODE_ENV=development && nodemon ./src/server.ts",
+    "dev": "SET NODE_ENV=development && nodemon ./src/server.ts",
     "start": "node ./dist/server.js"
   },
   "author": "",
