@@ -52,6 +52,34 @@ export const addToCart = async (req: Request, res: Response, next: NextFunction)
  */
 
 export const getProducts = async (req: Request, res: Response, next: NextFunction) => {
+    const currentPage: any = req.query.page || 1;
+    const perPage = 2;
+    try {
+        const totalItems = await Product.find().countDocuments();
+        const products = await Product.find()
+            .populate('creator')
+            .sort({createdAt: -1})
+            .skip((currentPage -1) * perPage)
+            .limit(perPage)
+
+        res.status(200).json({
+            message: 'Fetched products successfuly.',
+            products: products,
+            totalItems: totalItems
+        });
+    } catch (err: any) {
+        if(!err.statusCode) {
+            err.statusCode = 500;
+        };
+        next(err);
+    }
+};
+
+/**
+ * Get Product
+ */
+
+export const getProduct =async (req: Request, res: Response, next: NextFunction) => {
     const productId = req.params.productId;
     const product = await Product.findById(productId);
     try {
@@ -66,4 +94,4 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
         }
         next(err);
     }
-};
+}
