@@ -20,8 +20,11 @@
   },
   "homepage": "https://github.com/MikelGV/E-commerce-Back-end#readme",
   "dependencies": {
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.2"
   },
   "devDependencies": {
