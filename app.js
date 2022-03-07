@@ -6,6 +6,7 @@ const cors = require("cors");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const productRoute = require("./routes/product");
+const cartRoute = require("./routes/cart");
 
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(cors());
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/products", productRoute);
+app.use("/api/cart", cartRoute);
 
 app.listen(PORT || 500, () => {
     console.log("Backend is running");
