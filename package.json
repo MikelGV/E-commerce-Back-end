@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/MikelGV/E-commerce-Back-end#readme",
   "dependencies": {
+    "cacheable-request": "^10.2.7",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.0",
